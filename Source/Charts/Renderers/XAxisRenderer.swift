@@ -219,13 +219,15 @@ open class XAxisRenderer: AxisRendererBase
             if viewPortHandler.isInBoundsX(position.x)
             {
                 let label = xAxis.valueFormatter?.stringForValue(xAxis.entries[i], axis: xAxis) ?? ""
-				var attributedLabel = NSMutableAttributedString(string: "12:55pm") // NSAttributedString(string: label)
+				// var attributedLabel = NSMutableAttributedString(string: "12:55pm") // NSAttributedString(string: label)
+
+				var attributedLabel = NSMutableAttributedString(string: label, attributes: labelAttrs)
 
 				labelAttrs = customAMPMAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
 
 				if let range = label.range(of: label) {
 					let nsRange = NSRange(range, in: label)
-					attributedLabel.setAttributes(labelAttrs, range: nsRange)
+					// attributedLabel.setAttributes(labelAttrs, range: nsRange)
 					print("in here \(nsRange) \(range)")
 				}
 
