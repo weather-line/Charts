@@ -228,7 +228,7 @@ open class ChartUtils
         NSUIGraphicsPopContext()
     }
     
-    internal class func drawMultilineText(context: CGContext, text: String, knownTextSize: CGSize, point: CGPoint, attributes: [NSAttributedString.Key : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
+	internal class func drawMultilineText(context: CGContext, text: String, knownTextSize: CGSize, point: CGPoint, attributes: [NSAttributedString.Key : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat, attributedString: NSAttributedString? = nil)
     {
         var rect = CGRect(origin: CGPoint(), size: knownTextSize)
         
@@ -254,9 +254,13 @@ open class ChartUtils
             context.saveGState()
             context.translateBy(x: translate.x, y: translate.y)
             context.rotate(by: angleRadians)
-            
-            (text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-            
+
+			if let attributedText = attributedString {
+				attributedText.draw(with: rect, options: [.usesLineFragmentOrigin], context: nil)
+			} else {
+            	(text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+			}
+
             context.restoreGState()
         }
         else
@@ -269,17 +273,21 @@ open class ChartUtils
             
             rect.origin.x += point.x
             rect.origin.y += point.y
-            
-            (text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+
+			if let attributedText = attributedString {
+				attributedText.draw(with: rect, options: [.usesLineFragmentOrigin], context: nil)
+			} else {
+            	(text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+			}
         }
         
         NSUIGraphicsPopContext()
     }
     
-    internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedString.Key : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
+	internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedString.Key : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat, attributedString: NSAttributedString? = nil)
     {
         let rect = text.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        drawMultilineText(context: context, text: text, knownTextSize: rect.size, point: point, attributes: attributes, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
+		drawMultilineText(context: context, text: text, knownTextSize: rect.size, point: point, attributes: attributes, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians, attributedString: attributedString)
     }
 
     private class func generateDefaultValueFormatter() -> IValueFormatter

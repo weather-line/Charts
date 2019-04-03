@@ -19,7 +19,8 @@ import CoreGraphics
 @objc(ChartXAxisRenderer)
 open class XAxisRenderer: AxisRendererBase
 {
-	public var customLabelAttributes: [NSAttributedString.Key : Any] = [:]
+	public var customAMPMAttributes: [NSAttributedString.Key : Any] = [:]
+	public var applySmallCapsToAMPM: Bool = false
 
     @objc public init(viewPortHandler: ViewPortHandler, xAxis: XAxis?, transformer: Transformer?)
     {
@@ -182,10 +183,9 @@ open class XAxisRenderer: AxisRendererBase
         paraStyle.alignment = .center
         
         var labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
-            NSAttributedString.Key.foregroundColor: xAxis.labelTextColor,
+            NSAttributedString.Key.foregroundColor: UIColor.red,
             NSAttributedString.Key.paragraphStyle: paraStyle]
-		labelAttrs = customLabelAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
-        let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
+		let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
         
         let centeringEnabled = xAxis.isCenterAxisLabelsEnabled
 
@@ -219,6 +219,20 @@ open class XAxisRenderer: AxisRendererBase
             if viewPortHandler.isInBoundsX(position.x)
             {
                 let label = xAxis.valueFormatter?.stringForValue(xAxis.entries[i], axis: xAxis) ?? ""
+				var attributedLabel = NSMutableAttributedString(string: "12:55pm") // NSAttributedString(string: label)
+
+				labelAttrs = customAMPMAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
+
+				if let range = label.range(of: label) {
+					let nsRange = NSRange(range, in: label)
+					attributedLabel.setAttributes(labelAttrs, range: nsRange)
+					print("in here \(nsRange) \(range)")
+				}
+
+
+
+				// attributedLabel.setAttributes(labelAttrs, range: NSRange(label))
+
 
                 let labelns = label as NSString
                 
@@ -249,7 +263,9 @@ open class XAxisRenderer: AxisRendererBase
                           attributes: labelAttrs,
                           constrainedToSize: labelMaxSize,
                           anchor: anchor,
-                          angleRadians: labelRotationAngleRadians)
+                          angleRadians: labelRotationAngleRadians,
+						  attributedString: attributedLabel
+						  )
             }
         }
     }
@@ -262,7 +278,9 @@ open class XAxisRenderer: AxisRendererBase
         attributes: [NSAttributedString.Key : Any],
         constrainedToSize: CGSize,
         anchor: CGPoint,
-        angleRadians: CGFloat)
+        angleRadians: CGFloat,
+		attributedString: NSAttributedString? = nil
+		)
     {
         ChartUtils.drawMultilineText(
             context: context,
@@ -271,7 +289,9 @@ open class XAxisRenderer: AxisRendererBase
             attributes: attributes,
             constrainedToSize: constrainedToSize,
             anchor: anchor,
-            angleRadians: angleRadians)
+            angleRadians: angleRadians,
+			attributedString: attributedString
+			)
     }
     
     open override func renderGridLines(context: CGContext)
