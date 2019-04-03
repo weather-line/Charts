@@ -19,6 +19,8 @@ import CoreGraphics
 @objc(ChartXAxisRenderer)
 open class XAxisRenderer: AxisRendererBase
 {
+	public var customLabelAttributes: [NSAttributedString.Key : Any] = [:]
+
     @objc public init(viewPortHandler: ViewPortHandler, xAxis: XAxis?, transformer: Transformer?)
     {
         super.init(viewPortHandler: viewPortHandler, transformer: transformer, axis: xAxis)
@@ -179,9 +181,10 @@ open class XAxisRenderer: AxisRendererBase
         #endif
         paraStyle.alignment = .center
         
-        let labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
+        var labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
             NSAttributedString.Key.foregroundColor: xAxis.labelTextColor,
             NSAttributedString.Key.paragraphStyle: paraStyle]
+		labelAttrs = customLabelAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
         let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
         
         let centeringEnabled = xAxis.isCenterAxisLabelsEnabled
