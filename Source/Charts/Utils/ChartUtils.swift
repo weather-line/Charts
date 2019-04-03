@@ -286,7 +286,14 @@ open class ChartUtils
     
 	internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedString.Key : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat, attributedString: NSAttributedString? = nil)
     {
-        let rect = text.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+
+		var rect: CGRect = .zero
+		if let attributedString = attributedString {
+			rect = attributedString.boundingRect(with: constrainedToSize, options: [.usesLineFragmentOrigin], context: nil)
+		} else {
+			rect = text.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+		}
+
 		drawMultilineText(context: context, text: text, knownTextSize: rect.size, point: point, attributes: attributes, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians, attributedString: attributedString)
     }
 

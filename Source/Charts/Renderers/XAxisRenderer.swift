@@ -182,9 +182,10 @@ open class XAxisRenderer: AxisRendererBase
         #endif
         paraStyle.alignment = .center
         
-        var labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
+        let labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
             NSAttributedString.Key.foregroundColor: xAxis.labelTextColor,
             NSAttributedString.Key.paragraphStyle: paraStyle]
+		customAMPMAttributes[.foregroundColor] = xAxis.labelTextColor
 		let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
         
         let centeringEnabled = xAxis.isCenterAxisLabelsEnabled
@@ -230,27 +231,12 @@ open class XAxisRenderer: AxisRendererBase
 						if let range = label.range(of: ti, options: .caseInsensitive) {
 							let nsRange = NSRange(range, in: label)
 							attributedLabel.setAttributes(customAMPMAttributes, range: nsRange)
-							print("apply NSString on \(nsRange)")
 						}
 					}
-
 				}
-
-//				if let range = label.range(of: label) {
-//					let nsRange = NSRange(range, in: label)
-//					// attributedLabel.setAttributes(labelAttrs, range: nsRange)
-//					print("in here \(nsRange) \(range)")
-//				}
-
-
-
-				// attributedLabel.setAttributes(labelAttrs, range: NSRange(label))
-
 
                 let labelns = attributedLabel.mutableString as NSString
 
-				// label as NSString
-                
                 if xAxis.isAvoidFirstLastClippingEnabled
                 {
                     // avoid clipping of the last
