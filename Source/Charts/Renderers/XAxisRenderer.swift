@@ -247,7 +247,9 @@ open class XAxisRenderer: AxisRendererBase
 				// attributedLabel.setAttributes(labelAttrs, range: NSRange(label))
 
 
-                let labelns = label as NSString
+                let labelns = attributedLabel.mutableString as NSString
+
+				// label as NSString
                 
                 if xAxis.isAvoidFirstLastClippingEnabled
                 {
