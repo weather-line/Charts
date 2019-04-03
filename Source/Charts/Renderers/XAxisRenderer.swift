@@ -183,7 +183,7 @@ open class XAxisRenderer: AxisRendererBase
         paraStyle.alignment = .center
         
         var labelAttrs: [NSAttributedString.Key : Any] = [NSAttributedString.Key.font: xAxis.labelFont,
-            NSAttributedString.Key.foregroundColor: UIColor.red,
+            NSAttributedString.Key.foregroundColor: xAxis.labelTextColor,
             NSAttributedString.Key.paragraphStyle: paraStyle]
 		let labelRotationAngleRadians = xAxis.labelRotationAngle.DEG2RAD
         
@@ -219,17 +219,28 @@ open class XAxisRenderer: AxisRendererBase
             if viewPortHandler.isInBoundsX(position.x)
             {
                 let label = xAxis.valueFormatter?.stringForValue(xAxis.entries[i], axis: xAxis) ?? ""
-				// var attributedLabel = NSMutableAttributedString(string: "12:55pm") // NSAttributedString(string: label)
+				let attributedLabel = NSMutableAttributedString(string: label, attributes: labelAttrs)
 
-				var attributedLabel = NSMutableAttributedString(string: label, attributes: labelAttrs)
+				// labelAttrs = customAMPMAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
 
-				labelAttrs = customAMPMAttributes.reduce(into: labelAttrs,  {(r, e) in r[e.0] = e.1 })
+				if applySmallCapsToAMPM {
+					let timeIdentifiers = ["am", "pm", "a", "p"]
 
-				if let range = label.range(of: label) {
-					let nsRange = NSRange(range, in: label)
-					// attributedLabel.setAttributes(labelAttrs, range: nsRange)
-					print("in here \(nsRange) \(range)")
+					for ti in timeIdentifiers {
+						if let range = label.range(of: ti) {
+							let nsRange = NSRange(range, in: label)
+							attributedLabel.setAttributes(customAMPMAttributes, range: nsRange)
+							print("apply NSString on \(nsRange)")
+						}
+					}
+
 				}
+
+//				if let range = label.range(of: label) {
+//					let nsRange = NSRange(range, in: label)
+//					// attributedLabel.setAttributes(labelAttrs, range: nsRange)
+//					print("in here \(nsRange) \(range)")
+//				}
 
 
 
