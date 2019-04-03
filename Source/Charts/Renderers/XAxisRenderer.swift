@@ -227,7 +227,7 @@ open class XAxisRenderer: AxisRendererBase
 					let timeIdentifiers = ["am", "pm", "a", "p"]
 
 					for ti in timeIdentifiers {
-						if let range = label.range(of: ti) {
+						if let range = label.range(of: ti, options: .caseInsensitive) {
 							let nsRange = NSRange(range, in: label)
 							attributedLabel.setAttributes(customAMPMAttributes, range: nsRange)
 							print("apply NSString on \(nsRange)")
