@@ -19,8 +19,8 @@ import CoreGraphics
 @objc(ChartXAxisRenderer)
 open class XAxisRenderer: AxisRendererBase
 {
-	public var customAMPMAttributes: [NSAttributedString.Key : Any] = [:]
 	public var applySmallCapsToAMPM: Bool = false
+	public var customAMPMAttributes: [NSAttributedString.Key : Any] = [:]
 
     @objc public init(viewPortHandler: ViewPortHandler, xAxis: XAxis?, transformer: Transformer?)
     {
