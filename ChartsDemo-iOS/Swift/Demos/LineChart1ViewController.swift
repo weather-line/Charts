@@ -91,9 +91,11 @@ class LineChart1ViewController: DemoBaseViewController {
         
         chartView.legend.form = .line
         
-        sliderX.value = 45
+        sliderX.value = 20
         sliderY.value = 100
         slidersValueChanged(nil)
+
+		chartView.setVisibleXRange(minXRange: 0, maxXRange: 8.5)
         
         chartView.animate(xAxisDuration: 2.5)
     }

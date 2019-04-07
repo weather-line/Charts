@@ -675,6 +675,8 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         if recognizer.state == NSUIGestureRecognizerState.began && recognizer.nsuiNumberOfTouches() > 0
         {
             stopDeceleration()
+
+			print(_outerScrollView)
             
             if _data === nil || !self.isDragEnabled
             { // If we have no data, we have nothing to pan and no data to highlight
@@ -960,6 +962,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             if otherGestureRecognizer === scrollViewPanGestureRecognizer
             {
                 _outerScrollView = foundScrollView
+				foundScrollView?.alwaysBounceHorizontal = true
                 
                 return true
             }
