@@ -267,7 +267,8 @@ open class ViewPortHandler: NSObject
         return _touchMatrix
     }
 
-	var lastMaxTransX: CGFloat = 0.0
+	open var lastMaxTransX: CGFloat = 0.0
+	open var lastWidth: CGFloat = 0.0
 
     /// limits the maximum scale and X translation of the given matrix
     private func limitTransAndScale(matrix: inout CGAffineTransform, content: CGRect?)
@@ -294,9 +295,10 @@ open class ViewPortHandler: NSObject
         let maxTransY = height * (_scaleY - 1.0)
         _transY = max(min(matrix.ty, maxTransY + _transOffsetY), -_transOffsetY)
 
-		print("maxtranx : \(maxTransX) -- \t transx \(_transX) \t transoffsetx \(_transOffsetX) -- \tmatrix TX: \(matrix.tx)")
+		// print("maxtranx : \(maxTransX) -- \t transx \(_transX) \t transoffsetx \(_transOffsetX) -- \tmatrix TX: \(matrix.tx)")
 
 		lastMaxTransX = maxTransX
+		lastWidth = width
 
         matrix.tx = _transX
         matrix.a = _scaleX
