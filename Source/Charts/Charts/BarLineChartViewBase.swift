@@ -19,9 +19,6 @@ import CoreGraphics
 /// Base-class of LineChart, BarChart, ScatterChart and CandleStickChart.
 open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartDataProvider, NSUIGestureRecognizerDelegate
 {
-
-	public var edgeBounceAxisRange: Double = 0.0
-
     /// the maximum number of entries to which values will be drawn
     /// (entry numbers greater than this value will cause value-labels to disappear)
     internal var _maxVisibleCount = 100
@@ -791,14 +788,6 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             }
         }
     }
-
-	func moveToNearestEdge() {
-		if lowestVisibleX == xAxis.axisMinimum {
-			moveViewToAnimated(xValue: lowestVisibleX, yValue: 0, axis: .left, duration: 0.45, easing: easingFunctionFromOption(.easeOutCubic))
-		} else if highestVisibleX >= xAxis.axisMaximum {
-			moveViewToAnimated(xValue: xRange-edgeBounceAxisRange, yValue: 0, axis: .left, duration: 0.45, easing: easingFunctionFromOption(.easeOutCubic))
-		}
-	}
     
     private func performPanChange(translation: CGPoint) -> Bool
     {
@@ -822,25 +811,12 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         matrix = originalMatrix.concatenating(matrix)
         
         matrix = _viewPortHandler.refresh(newMatrix: matrix, chart: self, invalidate: true)
-
+        
         if delegate !== nil
         {
             delegate?.chartTranslated?(self, dX: translation.x, dY: translation.y)
         }
-
-		print(edgeBounceAxisRange)
-
-
-		if viewPortHandler.transX > 0 && !_isDragging {
-			stopDeceleration()
-			moveToNearestEdge()
-		}
-
-		if viewPortHandler.transX < viewPortHandler.lastMaxTransX && !_isDragging {
-			stopDeceleration()
-			moveToNearestEdge()
-		}
-
+        
         // Did we managed to actually drag or did we reach the edge?
         return matrix.tx != originalMatrix.tx || matrix.ty != originalMatrix.ty
     }
@@ -887,7 +863,6 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         if abs(_decelerationVelocity.x) < 0.001 && abs(_decelerationVelocity.y) < 0.001
         {
             stopDeceleration()
-			moveToNearestEdge()
             
             // Range might have changed, which means that Y-axis labels could have changed in size, affecting Y-axis size. So we need to recalculate offsets.
             calculateOffsets()
@@ -1235,7 +1210,6 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     /// If you call this method, chart must have data or it has no effect.
     @objc open func setVisibleXRange(minXRange: Double, maxXRange: Double)
     {
-		self.edgeBounceAxisRange = maxXRange
         let minScale = _xAxis.axisRange / maxXRange
         let maxScale = _xAxis.axisRange / minXRange
         _viewPortHandler.setMinMaxScaleX(

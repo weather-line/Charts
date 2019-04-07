@@ -96,9 +96,7 @@ class LineChart1ViewController: DemoBaseViewController {
         slidersValueChanged(nil)
 
 		chartView.setVisibleXRange(minXRange: 0, maxXRange: 8.5)
-		chartView.setDragOffsetX(50)
-		chartView.dragDecelerationFrictionCoef = 0.95
-
+        
         chartView.animate(xAxisDuration: 2.5)
     }
 

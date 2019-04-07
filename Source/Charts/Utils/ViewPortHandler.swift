@@ -22,8 +22,8 @@ open class ViewPortHandler: NSObject
     /// this rectangle defines the area in which graph values can be drawn
     private var _contentRect = CGRect()
     
-    public var _chartWidth = CGFloat(0.0)
-    public var _chartHeight = CGFloat(0.0)
+    private var _chartWidth = CGFloat(0.0)
+    private var _chartHeight = CGFloat(0.0)
     
     /// minimum scale value on the y-axis
     private var _minScaleY = CGFloat(1.0)
@@ -44,13 +44,13 @@ open class ViewPortHandler: NSObject
     private var _scaleY = CGFloat(1.0)
     
     /// current translation (drag distance) on the x-axis
-    public var _transX = CGFloat(0.0)
+    private var _transX = CGFloat(0.0)
     
     /// current translation (drag distance) on the y-axis
     private var _transY = CGFloat(0.0)
     
     /// offset that allows the chart to be dragged over its bounds on the x-axis
-    public var _transOffsetX = CGFloat(0.0)
+    private var _transOffsetX = CGFloat(0.0)
     
     /// offset that allows the chart to be dragged over its bounds on the x-axis
     private var _transOffsetY = CGFloat(0.0)
@@ -266,19 +266,17 @@ open class ViewPortHandler: NSObject
         
         return _touchMatrix
     }
-
-	var lastMaxTransX: CGFloat = 0.0
-
+    
     /// limits the maximum scale and X translation of the given matrix
     private func limitTransAndScale(matrix: inout CGAffineTransform, content: CGRect?)
     {
-
         // min scale-x is 1
         _scaleX = min(max(_minScaleX, matrix.a), _maxScaleX)
         
         // min scale-y is 1
         _scaleY = min(max(_minScaleY,  matrix.d), _maxScaleY)
-
+        
+        
         var width: CGFloat = 0.0
         var height: CGFloat = 0.0
         
@@ -293,11 +291,7 @@ open class ViewPortHandler: NSObject
         
         let maxTransY = height * (_scaleY - 1.0)
         _transY = max(min(matrix.ty, maxTransY + _transOffsetY), -_transOffsetY)
-
-		print("maxtranx : \(maxTransX) -- \t transx \(_transX) \t transoffsetx \(_transOffsetX) -- \tmatrix TX: \(matrix.tx)")
-
-		lastMaxTransX = maxTransX
-
+        
         matrix.tx = _transX
         matrix.a = _scaleX
         matrix.ty = _transY
