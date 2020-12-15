@@ -1,4 +1,9 @@
 import Foundation
+import CoreGraphics
+
+#if !os(OSX)
+    import UIKit
+#endif
 
 #if os(iOS) || os(tvOS)
 

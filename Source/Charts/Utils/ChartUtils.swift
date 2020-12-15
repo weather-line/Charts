@@ -12,6 +12,10 @@
 import Foundation
 import CoreGraphics
 
+#if !os(OSX)
+    import UIKit
+#endif
+
 extension Comparable {
     func clamped(to range: ClosedRange<Self>) -> Self {
         if self > range.upperBound {

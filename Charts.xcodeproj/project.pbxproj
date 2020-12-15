@@ -17,7 +17,6 @@
 		0577C2B38BCE4C871F262714 /* AnimatedZoomViewJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2EA58CB336967198D30D20 /* AnimatedZoomViewJob.swift */; };
 		064989461F5C99C7006E8BB3 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 064989451F5C99C7006E8BB3 /* Snapshot.swift */; };
 		0A772AEC08246FEC480673E5 /* PieRadarChartViewBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6C9631C69B2D772BBD9232 /* PieRadarChartViewBase.swift */; };
-		0AB58EBB258919BF00F18235 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AB58EBA258919BF00F18235 /* CoreGraphics.framework */; };
 		0C52C70C6E6EA09BD7426386 /* RadarChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB57D6FA41029B08F26D7B /* RadarChartData.swift */; };
 		0CAF514A280FF6A14E2A1A23 /* CombinedChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11EF1FE22549E885C8F40738 /* CombinedChartView.swift */; };
 		0D8A89398F9BD5DCC8D7F976 /* ICandleChartDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BFB0A14A5C47A302A597D9 /* ICandleChartDataSet.swift */; };
@@ -332,7 +331,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0AB58EBB258919BF00F18235 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
